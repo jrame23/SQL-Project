@@ -1,0 +1,160 @@
+--TABLE CREATION 
+CREATE TABLE COFFEE_SHOP
+(
+  shop_id    int             NOT NULL,
+  shop_name  varchar(50)     NOT NULL,
+  city       varchar(50)     NOT NULL,
+  state      char(2)         NOT NULL,
+  PRIMARY KEY (shop_id)
+  );
+  
+  commit;
+
+CREATE TABLE SUPPLIER
+(
+  supplier_id          int            NOT NULL,
+  company_name         varchar(50)    NOT NULL,
+  country              varchar(30)    NOT NULL,
+  sales_contact_name   varchar(60)    NOT NULL,
+  email                varchar(50)    NOT NULL,
+  PRIMARY KEY (supplier_id)
+  );
+  
+    commit;
+    
+
+
+
+
+
+CREATE TABLE COFFEE
+  (
+    coffee_id           int           NOT NULL,
+    shop_id             int           NOT NULL,
+    supplier_id         int           NOT NULL,
+    coffee_name         varchar(30)   NOT NULL,
+    price_per_pound     numeric(5,2)  NOT NULL,
+    PRIMARY KEY (coffee_id),
+    FOREIGN KEY (shop_id) REFERENCES COFFEE_SHOP (shop_id),
+    FOREIGN KEY (supplier_id) REFERENCES SUPPLIER (supplier_id)
+    );
+
+    commit;
+
+CREATE TABLE EMPLOYEE
+(
+    employee_id          int           NOT NULL,
+    first_name           varchar(30)   NOT NULL,
+    last_name            varchar(30)   NOT NULL,
+    hire_date            date          NOT NULL,
+    job_title            varchar(30)   NOT NULL,
+    shop_id              integer       NOT NULL,
+    PRIMARY KEY (employee_id),
+    FOREIGN KEY (shop_id) REFERENCES COFFEE_SHOP (shop_id)
+  );
+  
+    commit;
+
+
+--INSERT DATA INTO TABLES
+/* inserting values for tables */
+    
+INSERT INTO COFFEE_SHOP (shop_id, shop_name, city, state)
+VALUES (1, 'Coffee Bear', 'Los Angeles', 'CA');
+INSERT INTO COFFEE_SHOP (shop_id, shop_name, city, state)
+VALUES (2, 'Lucky Bean', 'New York', 'NY');
+INSERT INTO COFFEE_SHOP (shop_id, shop_name, city, state)
+VALUES (3, 'Black Energy', 'New York', 'NY');
+
+	commit;
+    
+INSERT INTO SUPPLIER (supplier_id, company_name, country, sales_contact_name, email)
+VALUES (22, 'Golden coffee co.', 'Colombia', 'Jacob Amaya', 'Jamaya@gmail.com');
+INSERT INTO SUPPLIER (supplier_id, company_name, country, sales_contact_name, email)
+VALUES (23, 'Blue coffee co.', 'Honduras', 'Yahir Mendoza', 'YahMendoza@gmail.com');
+INSERT INTO SUPPLIER (supplier_id, company_name, country, sales_contact_name, email)
+VALUES (24, 'Natures Gift co.', 'Guatemala', 'Marvin Lopez', 'MLopez@gmail.com');
+
+	commit;
+    
+INSERT INTO EMPLOYEE (employee_id, first_name, last_name, hire_date, job_title, shop_id)
+VALUES (34, 'Mark', 'Smith', '2020-03-20', 'Server', 2);
+INSERT INTO EMPLOYEE (employee_id, first_name, last_name, hire_date, job_title, shop_id)
+VALUES (35, 'Alice', 'Cooper', '2021-02-26', 'Server', 3);
+INSERT INTO EMPLOYEE (employee_id, first_name, last_name, hire_date, job_title, shop_id)
+VALUES (36, 'Charlie', 'Otto', '2018-06-12', 'Manager', 1);
+	
+    commit;
+    INSERT INTO COFFEE (coffee_id, shop_id, supplier_id, coffee_name, price_per_pound)
+VALUES (11, 3, 22, 'Dark roast', 8.00);
+INSERT INTO COFFEE (coffee_id, shop_id, supplier_id, coffee_name, price_per_pound)
+VALUES (12, 2, 24, 'Light roast', 7.50);
+INSERT INTO COFFEE (coffee_id, shop_id, supplier_id, coffee_name, price_per_pound)
+VALUES (13, 1, 23, 'Decaf', 7.00);
+
+	commit;
+   
+
+--SELECT STATEMENTS SHOWCASING THE DATA CORRECTLY INSERTED INTO EACH TABLE
+/*
+select *
+from COFFEE_SHOP;
+
+select *
+from COFFEE;
+
+select *
+from SUPPLIER;
+
+select *
+from EMPLOYEE;
+
+*/
+
+
+
+
+--CREATING VIEW FOR SHOWING CONCATENATED EMPLOYEE FIRST AND LAST NAME
+
+/* creating the view full_name */
+
+CREATE VIEW full_name AS
+SELECT CONCAT(first_name,' ', last_name) AS 'employee_full_name',
+employee_id,
+hire_date,
+job_title,
+shop_id
+FROM EMPLOYEE;
+
+commit;
+
+--QUERYING THE VIEW
+SELECT *
+FROM full_name;
+
+
+--CREATING INDEX ON THE COLUMN COFFEE_NAME FROM THE COFFEE TABLE
+
+/* creating an index on coffee_name */
+
+CREATE INDEX index_coffee_name
+ON COFFEE (coffee_name);
+
+commit;
+
+
+--CREATING A SELECT-FROM-WHERE QUERY FROM A TABLE
+
+SELECT coffee_name
+FROM COFFEE
+WHERE price_per_pound >= 7.50;
+
+
+--WRITE A JOIN QUERY WHICH JOINS THREE TABLES AND SHOWS ATTRIBUTES FROM EACH TABLE
+
+SELECT shop_name, coffee_name, company_name
+	FROM COFFEE_SHOP
+    INNER JOIN COFFEE
+    ON COFFEE_SHOP.shop_id = COFFEE.shop_id
+    INNER JOIN SUPPLIER
+    ON COFFEE.supplier_id = SUPPLIER.supplier_id;
