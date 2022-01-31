@@ -1,4 +1,2 @@
-
-# Haikus for Codespaces
-
-This is a quick node project template for demoing Codespaces. It is based off of the [Azure node sample](https://github.com/Azure-Samples/nodejs-docs-hello-world). It's great!!!
+This project showcases basic SQL literacy. It is a design for a coffee shop database which entails creating tables, inserting values, creating views, and writing join statements.
+The code can be tested and run using websites such as DBfiddle.com
